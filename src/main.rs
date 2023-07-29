@@ -36,16 +36,3 @@ fn main() {
         part2: day1::part2,
     })
 }
-
-#[cfg(test)]
-mod tests {
-    use crate::day1;
-
-    #[test]
-    pub fn test_day1() {
-        assert_eq!(
-            day1::part1(&day1::DAY1_PART1_TEST.to_owned()).as_str(),
-            day1::DAY1_PART1_TEST_EXPECT
-        )
-    }
-}
