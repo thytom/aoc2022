@@ -1,4 +1,5 @@
 mod day1;
+mod day2;
 
 fn get_input_for_day(day: u8) -> Result<String, std::io::Error> {
     let cookie = std::env::var("AOC_SESSION_COOKIE").expect("Session cookie not set!");
@@ -10,16 +11,30 @@ fn get_input_for_day(day: u8) -> Result<String, std::io::Error> {
         .into_string()
 }
 
-fn perform_day(day: Day) {
+fn perform_day(day: &Day) -> std::time::Duration {
     // Fetch the input
+    println!("Fetching day {} input...", day.number);
     let input: String = get_input_for_day(day.number).expect("Failed to decode input!");
 
     let part1 = day.part1;
     let part2 = day.part2;
 
+    let start_time = std::time::Instant::now();
+    let p1: String = part1(&input);
+    let p2: String = part2(&input);
+    let total_time = std::time::Duration::from(start_time.elapsed());
+
     println!("Performing Day {}", day.number);
-    println!("Part 1: {}", part1(&input));
-    println!("Part 2: {}", part2(&input));
+    println!("Part 1: {}", p1);
+    println!("Part 2: {}", p2);
+
+    println!(
+        "Day {} completed in {} us",
+        day.number,
+        total_time.as_micros()
+    );
+
+    total_time
 }
 
 #[derive(Debug)]
@@ -30,9 +45,17 @@ struct Day {
 }
 
 fn main() {
-    perform_day(Day {
-        number: 1,
-        part1: day1::part1,
-        part2: day1::part2,
-    })
+    #[cfg_attr(rustfmt, rustfmt_skip)]
+    let days: Vec<Day> = vec![
+        Day { number: 1, part1: day1::part1, part2: day1::part2, },
+        Day { number: 2, part1: day2::part1, part2: day2::part2, }
+    ];
+
+    let prog_time = days.iter().map(perform_day).sum::<std::time::Duration>();
+
+    println!(
+        "\n{} days completed in {} ms",
+        days.len(),
+        prog_time.as_millis()
+    );
 }
