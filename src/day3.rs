@@ -1,5 +1,3 @@
-use std::ops::Deref;
-
 fn char_to_priority(c: char) -> u32 {
     match c {
         'a'..='z' => c as u32 - 'a' as u32 + 1,
@@ -26,12 +24,10 @@ pub fn part1(input: &String) -> String {
         .strip_suffix("\n")
         .unwrap_or(input)
         .split("\n")
-        .map(|s| -> Vec<&str> {
+        .map(|s| -> u32 {
             let (f, l) = s.split_at(s.len() / 2);
-            vec![f, l]
+            char_to_priority(find_commonality(&[f, l][..]))
         })
-        .map(|v| -> char { find_commonality(v.deref()) })
-        .map(char_to_priority)
         .sum::<u32>()
         .to_string()
 }
@@ -43,8 +39,7 @@ pub fn part2(input: &String) -> String {
         .split("\n")
         .collect::<Vec<&str>>()
         .chunks(3)
-        .map(find_commonality)
-        .map(char_to_priority)
+        .map(|c| -> u32 { char_to_priority(find_commonality(c)) })
         .sum::<u32>()
         .to_string()
 }
