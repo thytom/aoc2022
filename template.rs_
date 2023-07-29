@@ -1,0 +1,25 @@
+pub fn part1(input: &String) -> String {
+}
+
+pub fn part2(input: &String) -> String {
+}
+
+#[cfg(test)]
+mod tests {
+    pub const TEST: &str = r#""#;
+
+    pub const PART1_TEST_EXPECT: &str = "";
+    pub const PART2_TEST_EXPECT: &str = "";
+
+    use super::*;
+
+    #[test]
+    pub fn test_day1() {
+        assert_eq!(part1(&TEST.to_owned()).as_str(), PART1_TEST_EXPECT)
+    }
+
+    #[test]
+    pub fn test_day2() {
+        assert_eq!(part2(&TEST.to_owned()).as_str(), PART2_TEST_EXPECT)
+    }
+}

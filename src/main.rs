@@ -1,5 +1,6 @@
 mod day1;
 mod day2;
+mod day3;
 
 fn get_input_for_day(day: u8) -> Result<String, std::io::Error> {
     let cookie = std::env::var("AOC_SESSION_COOKIE").expect("Session cookie not set!");
@@ -22,7 +23,7 @@ fn perform_day(day: &Day) -> std::time::Duration {
     let start_time = std::time::Instant::now();
     let p1: String = part1(&input);
     let p2: String = part2(&input);
-    let total_time = std::time::Duration::from(start_time.elapsed());
+    let total_time = start_time.elapsed();
 
     println!("Performing Day {}", day.number);
     println!("Part 1: {}", p1);
@@ -48,10 +49,14 @@ fn main() {
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let days: Vec<Day> = vec![
         Day { number: 1, part1: day1::part1, part2: day1::part2, },
-        Day { number: 2, part1: day2::part1, part2: day2::part2, }
+        Day { number: 2, part1: day2::part1, part2: day2::part2, },
+        Day { number: 3, part1: day3::part1, part2: day3::part2, },
+        // Day { number: X, part1: dayX::part1, part2: dayX::part2, },
     ];
 
-    let prog_time = days.iter().map(perform_day).sum::<std::time::Duration>();
+    let prog_time = perform_day(days.iter().last().unwrap());
+    // Do all of them
+    //let prog_time = days.iter().map(perform_day).sum::<std::time::Duration>();
 
     println!(
         "\n{} days completed in {} ms",
