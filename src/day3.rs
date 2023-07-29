@@ -1,28 +1,11 @@
+use std::ops::Deref;
+
 fn char_to_priority(c: char) -> u32 {
     match c {
         'a'..='z' => c as u32 - 'a' as u32 + 1,
         'A'..='z' => c as u32 - 'A' as u32 + 27,
         _ => panic!("Bad char received!"),
     }
-}
-
-fn generate_rucksack(line: String) -> (Vec<u32>, Vec<u32>) {
-    let priorities = line.chars().map(char_to_priority).collect::<Vec<u32>>();
-
-    let size = priorities.len();
-
-    let split = priorities.split_at(size / 2);
-
-    (split.0.to_owned(), split.1.to_owned())
-}
-
-fn find_duplicate(rs: (Vec<u32>, Vec<u32>)) -> u32 {
-    rs.0.iter()
-        .map(|a| -> (u32, bool) { (a.clone(), rs.1.contains(a)) })
-        .filter(|(_, b)| -> bool { *b })
-        .next()
-        .expect("Something went wrong!")
-        .0
 }
 
 fn find_commonality(rs: &[&str]) -> char {
@@ -43,7 +26,12 @@ pub fn part1(input: &String) -> String {
         .strip_suffix("\n")
         .unwrap_or(input)
         .split("\n")
-        .map(|a| -> u32 { find_duplicate(generate_rucksack(a.to_owned())) })
+        .map(|s| -> Vec<&str> {
+            let (f, l) = s.split_at(s.len() / 2);
+            vec![f, l]
+        })
+        .map(|v| -> char { find_commonality(v.deref()) })
+        .map(char_to_priority)
         .sum::<u32>()
         .to_string()
 }
