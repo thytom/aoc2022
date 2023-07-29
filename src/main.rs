@@ -1,3 +1,5 @@
+use std::env;
+
 mod day1;
 mod day2;
 mod day3;
@@ -47,6 +49,8 @@ struct Day {
 }
 
 fn main() {
+    let should_run_all = env::args().find(|e| e == "all");
+
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let days: Vec<Day> = vec![
         Day { number: 1, part1: day1::part1, part2: day1::part2, },
@@ -56,9 +60,17 @@ fn main() {
         // Day { number: X, part1: dayX::part1, part2: dayX::part2, },
     ];
 
-    let prog_time = perform_day(days.iter().last().unwrap());
-    // Do all of them
-    //let prog_time = days.iter().map(perform_day).sum::<std::time::Duration>();
+    let prog_time;
+
+    match should_run_all {
+        Some(_) => {
+            prog_time = days.iter().map(perform_day).sum::<std::time::Duration>();
+        }
+
+        _ => {
+            prog_time = perform_day(days.iter().last().unwrap());
+        }
+    }
 
     println!(
         "\n{} days completed in {} ms",
