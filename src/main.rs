@@ -1,4 +1,8 @@
 use std::env;
+use std::fs::{read_to_string, File};
+use std::io::Write;
+use std::path::Path;
+use std::result::Result;
 
 mod day1;
 mod day2;
@@ -16,10 +20,36 @@ fn get_input_for_day(day: u8) -> Result<String, std::io::Error> {
         .into_string()
 }
 
+fn get_input_from_file(day_num: u8) -> Result<String, std::io::Error> {
+    read_to_string(format!("./cache/day{}.txt", day_num).as_str())
+}
+
+fn write_file_cache(day_num: u8, input: &str) {
+    if !Path::new("./cache").exists() {
+        println!("Creating cache dir ./cache");
+        assert!(std::fs::create_dir("./cache").is_ok());
+    }
+
+    println!("Writing input for day {} to cache...", day_num);
+
+    let mut file = File::create(Path::new(format!("./cache/day{}.txt", day_num).as_str()))
+        .expect("Couldn't create file!");
+
+    file.write(input.as_bytes())
+        .expect("Failed to write to file!");
+}
+
 fn perform_day(day: &Day) -> std::time::Duration {
-    // Fetch the input
-    println!("Fetching day {} input...", day.number);
-    let input: String = get_input_for_day(day.number).expect("Failed to decode input!");
+    let file_input = get_input_from_file(day.number);
+    let input: String;
+
+    if file_input.is_err() {
+        input = get_input_for_day(day.number).expect("Failed to decode input!");
+        write_file_cache(day.number, &input);
+    } else {
+        println!("Found cached input for day {}", day.number);
+        input = file_input.unwrap();
+    }
 
     let part1 = day.part1;
     let part2 = day.part2;
