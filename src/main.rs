@@ -26,12 +26,17 @@ fn perform_day(day: &Day) -> std::time::Duration {
 
     let start_time = std::time::Instant::now();
     let p1: String = part1(&input);
+    let p1_time = start_time.elapsed();
+
+    let start2_time = std::time::Instant::now();
     let p2: String = part2(&input);
-    let total_time = start_time.elapsed();
+    let p2_time = start2_time.elapsed();
 
     println!("Performing Day {}", day.number);
-    println!("Part 1: {}", p1);
-    println!("Part 2: {}", p2);
+    println!("Part 1: {} in {} us", p1, p1_time.as_micros());
+    println!("Part 2: {} in {} us", p2, p2_time.as_micros());
+
+    let total_time = p1_time + p2_time;
 
     println!(
         "Day {} completed in {} us",

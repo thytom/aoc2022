@@ -76,28 +76,34 @@ fn get_stack_tops(s: &Vec<Vec<char>>) -> String {
         .collect::<String>()
 }
 
-fn parse_move(s: &str) -> (usize, usize, usize) {
+fn parse_moves_rg(s: &str) -> Vec<(usize, usize, usize)> {
     let re = Regex::new(r"(\d+).*(\d+).*(\d+)").unwrap();
-    let caps = re.captures(s).unwrap();
+    let mut results: Vec<(usize, usize, usize)> = Vec::with_capacity(s.lines().count());
 
-    (
-        caps[1].parse::<usize>().unwrap(),
-        caps[2].parse::<usize>().unwrap(),
-        caps[3].parse::<usize>().unwrap(),
-    )
+    for (_, [times, from, to]) in re.captures_iter(s).map(|c| c.extract()) {
+        results.push((
+            times.parse::<usize>().unwrap(),
+            from.parse::<usize>().unwrap(),
+            to.parse::<usize>().unwrap(),
+        ))
+    }
+
+    results
 }
 
 fn parse_input(input: &String) -> (Vec<Vec<char>>, Vec<(usize, usize, usize)>) {
-    let (stacks_str, _moves_str) = input
+    let (stacks_str, moves_str) = input
         .split_once("\n\n")
         .expect("Couldn't separate both parts!");
 
     let stacks = build_stacks(stacks_str);
 
-    let moves = _moves_str
-        .lines()
-        .map(|l| parse_move(l))
-        .collect::<Vec<(usize, usize, usize)>>();
+    let moves = parse_moves_rg(moves_str);
+
+    // _moves_str
+    // .lines()
+    // .map(|l| parse_move(l))
+    // .collect::<Vec<(usize, usize, usize)>>();
 
     (stacks, moves)
 }
