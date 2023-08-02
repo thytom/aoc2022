@@ -3,13 +3,13 @@ fn check_seq(v: &[u8], size: usize) -> bool {
 
     for i in 0..size {
         for j in 0..size {
-            if i != j {
-                out &= !(v[i] == v[j]);
+            if i != j && v[i] == v[j] {
+                return false;
             }
         }
     }
 
-    out
+    true
 }
 
 fn check_str_chunks(input: &String, size: usize) -> String {
