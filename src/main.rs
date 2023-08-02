@@ -9,6 +9,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
 fn get_input_for_day(day: u8) -> Result<String, std::io::Error> {
     let cookie = std::env::var("AOC_SESSION_COOKIE").expect("Session cookie not set!");
@@ -94,6 +95,7 @@ fn main() {
         Day { number: 3, part1: day3::part1, part2: day3::part2, },
         Day { number: 4, part1: day4::part1, part2: day4::part2, },
         Day { number: 5, part1: day5::part1, part2: day5::part2, },
+        Day { number: 6, part1: day6::part1, part2: day6::part2, },
         // Day { number: X, part1: dayX::part1, part2: dayX::part2, },
     ];
 
