@@ -1,20 +1,23 @@
-use std::collections::HashSet;
+fn check_seq(v: &[u8], size: usize) -> bool {
+    let mut out = true;
 
-fn check_seq(v: &[u8]) -> bool {
-    let mut map = HashSet::new();
-
-    for c in v {
-        map.insert(c);
+    for i in 0..size {
+        for j in 0..size {
+            if i != j {
+                out &= !(v[i] == v[j]);
+            }
+        }
     }
 
-    map.len() == v.len()
+    out
 }
 
 fn check_str_chunks(input: &String, size: usize) -> String {
     let bytes = input.as_bytes();
+    //let mut h = HashSet::with_capacity(size);
 
     for i in 0..bytes.len() - size {
-        if check_seq(&bytes[i..i + size]) {
+        if check_seq(&bytes[i..i + size], size) {
             return (i + size).to_string();
         }
     }
