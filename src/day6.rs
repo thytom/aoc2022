@@ -1,6 +1,4 @@
 fn check_seq(v: &[u8], size: usize) -> bool {
-    let mut out = true;
-
     for i in 0..size {
         for j in 0..size {
             if i != j && v[i] == v[j] {
@@ -14,7 +12,6 @@ fn check_seq(v: &[u8], size: usize) -> bool {
 
 fn check_str_chunks(input: &String, size: usize) -> String {
     let bytes = input.as_bytes();
-    //let mut h = HashSet::with_capacity(size);
 
     for i in 0..bytes.len() - size {
         if check_seq(&bytes[i..i + size], size) {
